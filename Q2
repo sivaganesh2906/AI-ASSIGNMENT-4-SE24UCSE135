@@ -1,0 +1,39 @@
+# Q2: Telangana Map Coloring 
+
+districts = ['Adilabad','Nizamabad','Karimnagar','Warangal','Khammam','Mahabubnagar']
+
+neighbors = {
+    'Adilabad': ['Nizamabad'],
+    'Nizamabad': ['Adilabad','Karimnagar'],
+    'Karimnagar': ['Nizamabad','Warangal'],
+    'Warangal': ['Karimnagar','Khammam'],
+    'Khammam': ['Warangal','Mahabubnagar'],
+    'Mahabubnagar': ['Khammam']
+}
+
+colors = ['Red','Green','Blue','Yellow']
+
+def is_valid(district, color, assignment):
+    for neighbor in neighbors[district]:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+    return True
+
+def backtrack(assignment):
+    if len(assignment) == len(districts):
+        return assignment
+
+    for d in districts:
+        if d not in assignment:
+            for color in colors:
+                if is_valid(d, color, assignment):
+                    assignment[d] = color
+                    result = backtrack(assignment)
+                    if result:
+                        return result
+                    del assignment[d]
+    return None
+
+solution = backtrack({})
+print("Telangana Map Coloring:")
+print(solution)
